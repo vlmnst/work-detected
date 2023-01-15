@@ -18,47 +18,20 @@ const checkwsp = (req, res) => {
 
   //An array of all open pages inside the Browser.
   (async () => {
-    const browser = await puppeteer.connect({
+    try {
+      const browser = await puppeteer.connect({
       browserWSEndpoint: wsChromeEndpointurl,
   });
     const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: 'networkidle0'
-  });
-  })();
-
-  //Funcion para abrir la pagina
-  async function startBrowser() {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
-    return { browser, page };
-  }
-
-  //Funcion para cerrar la pagina
-  async function closeBrowser(browser) {
-    return browser.close();
-  }
-
-  async function playTest(url) {
-    try {
-      const { browser, page } = await startBrowser();
-      page.setViewport({ width: 1366, height: 768 });
-
-      await page.goto(url);
-
-      //    closeBrowser(browser)
+  });      
     } catch (error) {
       console.log(error);
     }
-  }
 
-  // (async () => {
-  //   try {
-  //     await playTest(url);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // })();
+  })();
+
 
   res.send({ msg: "hola" });
 };
